@@ -1,0 +1,16 @@
+# Terraform internals
+.terraform/
+**/.terraform/*
+terraform.tfstate
+terraform.tfstate.*
+*.tfstate
+*.tfstate.*
+
+# Secrets
+.vault_pass
+backend.hcl
+backend.hcl.vault
+secrets.auto.tfvars
+secrets.auto.tfvars.vault
+*.tfvars
+*.tfvars.json

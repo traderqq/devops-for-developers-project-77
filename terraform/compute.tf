@@ -1,20 +1,11 @@
-resource "yandex_vpc_network" "main" {
-  name = "hexlet-network"
-}
-
-resource "yandex_vpc_subnet" "main" {
-  name           = "hexlet-subnet"
-  zone           = var.zone
-  network_id     = yandex_vpc_network.main.id
-  v4_cidr_blocks = ["10.10.0.0/24"]
-}
-
 data "yandex_compute_image" "ubuntu" {
   family = "ubuntu-2204-lts"
 }
 
 resource "yandex_compute_instance" "web" {
-  name        = "hexlet-web"
+  count = 2
+
+  name        = "${var.project_name}-web-${count.index + 1}"
   platform_id = "standard-v1"
   zone        = var.zone
 
@@ -32,8 +23,9 @@ resource "yandex_compute_instance" "web" {
   }
 
   network_interface {
-    subnet_id = yandex_vpc_subnet.main.id
-    nat       = true
+    subnet_id          = yandex_vpc_subnet.main.id
+    nat                = true
+    security_group_ids = [yandex_vpc_security_group.web.id]
   }
 
   metadata = {

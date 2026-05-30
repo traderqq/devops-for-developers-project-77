@@ -11,5 +11,6 @@ resource "local_file" "ansible_inventory" {
     db_user     = yandex_mdb_postgresql_user.wikijs.name
     db_password = var.db_password
     app_domain  = var.app_domain
+    datadog_api_key = var.datadog_api_key
   })
 }

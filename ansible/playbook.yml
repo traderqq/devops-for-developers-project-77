@@ -1,9 +1,30 @@
 ---
-- name: Deploy Wiki.js
+- name: Deploy Wiki.js and Datadog Agent
   hosts: "{{ target_hosts | default('web') }}"
   become: true
 
   tasks:
+    - name: Install Datadog Agent
+      ansible.builtin.import_role:
+        name: datadog.dd.agent
+      vars:
+        datadog_api_key: "{{ dd_api_key }}"
+        datadog_site: "{{ dd_site | default('datadoghq.com') }}"
+        datadog_config:
+          tags:
+            - "env:dev"
+            - "project:wikijs"
+            - "service:wikijs"
+        datadog_checks:
+          http_check:
+            init_config:
+            instances:
+              - name: wikijs_local
+                url: http://127.0.0.1:3000/
+                timeout: 5
+                method: GET
+                http_response_status_code: "1xx|2xx|3xx"
+
     - name: Install packages
       ansible.builtin.apt:
         name:

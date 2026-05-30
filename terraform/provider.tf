@@ -11,6 +11,12 @@ terraform {
       source  = "hashicorp/local"
       version = "~> 2.5"
     }
+
+    datadog = {
+      source  = "DataDog/datadog"
+      version = "~> 3.0"
+    }
+
   }
 }
 
@@ -19,4 +25,9 @@ provider "yandex" {
   cloud_id  = var.cloud_id
   folder_id = var.folder_id
   zone      = var.zone
+}
+
+provider "datadog" {
+  api_key = var.datadog_api_key
+  app_key = var.datadog_app_key
 }

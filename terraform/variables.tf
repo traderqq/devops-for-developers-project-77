@@ -69,3 +69,13 @@ variable "ssh_allowed_cidrs" {
   type    = list(string)
   default = ["0.0.0.0/0"]
 }
+
+variable "datadog_api_key" {
+  type      = string
+  sensitive = true
+}
+
+variable "datadog_app_key" {
+  type      = string
+  sensitive = true
+}

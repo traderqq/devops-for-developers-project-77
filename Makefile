@@ -24,12 +24,14 @@ destroy:
 output:
 	cd $(TF_DIR) && ./tf.sh output
 
-provision-primary:
-	ansible-galaxy collection install community.docker
-	ansible-playbook -i $(ANSIBLE_DIR)/inventory.ini $(ANSIBLE_DIR)/playbook.yml -e target_hosts=wikijs-web-1
 
 provision:
-	ansible-galaxy collection install community.docker
+	ansible-galaxy collection install -r $(ANSIBLE_DIR)/requirements.yml
 	ansible-playbook -i $(ANSIBLE_DIR)/inventory.ini $(ANSIBLE_DIR)/playbook.yml
+
+provision-primary:
+	ansible-galaxy collection install -r $(ANSIBLE_DIR)/requirements.yml
+	ansible-playbook -i $(ANSIBLE_DIR)/inventory.ini $(ANSIBLE_DIR)/playbook.yml -e target_hosts=wikijs-web-1
+
 
 deploy: apply provision

@@ -21,10 +21,6 @@ apply:
 destroy:
 	cd $(TF_DIR) && ./tf.sh destroy
 
-output:
-	cd $(TF_DIR) && ./tf.sh output
-
-
 provision:
 	ansible-galaxy collection install -r $(ANSIBLE_DIR)/requirements.yml
 	ansible-playbook -i $(ANSIBLE_DIR)/inventory.ini $(ANSIBLE_DIR)/playbook.yml

@@ -11,8 +11,14 @@ Wikijs rollout will be done with Ansible
 Project is available here: [birchcapital.space](https://birchcapital.space)
 
 ### settings things up
+make init - prepare environment
+
+make plan - prepare and check everything before terraform will start
+
 make apply - create yandex cloud infrastructure and prepare servers
 
 make provision-primary - roll-out wikijs to 1st vm (you need to go [here](https://birchcapital.space) and make initial setup before next step!)
 
 make provision - create other vm (only after wikijs setup)
+
+make destory - disposing of all created infrastructure

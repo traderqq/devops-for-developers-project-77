@@ -1,1 +1,2 @@
 ansible/inventory.ini
+ansible/upmon_checks.yml

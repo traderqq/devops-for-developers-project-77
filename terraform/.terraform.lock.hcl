@@ -9,6 +9,14 @@ provider "registry.terraform.io/datadog/datadog" {
   ]
 }
 
+provider "registry.terraform.io/hashicorp/external" {
+  version     = "2.4.0"
+  constraints = "~> 2.3"
+  hashes = [
+    "h1:K0eLC86zbhVoyS4THmY00KJZKAQORuz6dt9Ro3xo/wA=",
+  ]
+}
+
 provider "registry.terraform.io/hashicorp/local" {
   version     = "2.9.0"
   constraints = "~> 2.5"

@@ -1,7 +1,10 @@
 ---
-- name: Deploy Wiki.js and Datadog Agent
+- name: Deploy Wiki.js and monitoring
   hosts: "{{ target_hosts | default('web') }}"
   become: true
+
+  vars_files:
+    - upmon_checks.yml
 
   tasks:
     - name: Install Datadog Agent
@@ -33,6 +36,7 @@
           - gnupg
           - docker.io
           - python3-docker
+          - cron
         state: present
         update_cache: true
 
@@ -59,3 +63,35 @@
           DB_PASS: "{{ db_password }}"
           DB_NAME: "{{ db_name }}"
           HA_ACTIVE: "1"
+
+    - name: Install Upmon Wiki.js check script
+      ansible.builtin.copy:
+        dest: /usr/local/bin/wikijs-upmon-check
+        owner: root
+        group: root
+        mode: "0755"
+        content: |
+          #!/usr/bin/env bash
+          set -euo pipefail
+
+          APP_URL="http://127.0.0.1:3000/"
+          PING_URL="{{ upmon_checks[inventory_hostname].ping_url }}"
+
+          if curl -fsS -m 10 -o /dev/null "$APP_URL"; then
+            curl -fsS -m 10 --retry 3 -o /dev/null "$PING_URL"
+          fi
+
+    - name: Enable and start cron
+      ansible.builtin.systemd:
+        name: cron
+        enabled: true
+        state: started
+
+    - name: Install Upmon cron job
+      ansible.builtin.copy:
+        dest: /etc/cron.d/wikijs-upmon-check
+        owner: root
+        group: root
+        mode: "0644"
+        content: |
+          * * * * * root /usr/local/bin/wikijs-upmon-check

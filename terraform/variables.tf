@@ -79,3 +79,8 @@ variable "datadog_app_key" {
   type      = string
   sensitive = true
 }
+
+variable "upmon_api_key" {
+  type      = string
+  sensitive = true
+}
